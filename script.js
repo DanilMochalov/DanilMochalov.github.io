@@ -36,7 +36,7 @@ async function initTerminal() {
     
     const outputs = [
         'danila\n',
-        'Developer | автоматизация процессов и машинное обучение\n',
+        'Developer | автоматизация процессов и машинное обучение\nМосква\n',
         'JavaScript  Docker  SQL  Python  Postman  Webpack\nPandas  NumPy  PyTorch\n',
         'origin  https://github.com/DanilMochalov (fetch)\norigin  https://github.com/DanilMochalov (push)\n',
         'GitHub: github.com/DanilMochalov\nTelegram: @thejoypuck\nInstagram: @thejoypuck\n'
@@ -44,6 +44,9 @@ async function initTerminal() {
     
     // Show first command
     await typeWriter(introCommand, commands[0], 80);
+    
+    // Remove typing class after first command is complete
+    introCommand.classList.remove('typing');
     
     await new Promise(resolve => setTimeout(resolve, 500));
     
@@ -62,7 +65,7 @@ async function initTerminal() {
         
         const prompt = document.createElement('span');
         prompt.className = 'prompt';
-        prompt.textContent = 'danila@developer:~$';
+        prompt.textContent = 'danila@develop:~$';
         
         const command = document.createElement('span');
         command.className = 'command typing';
@@ -73,6 +76,9 @@ async function initTerminal() {
         terminal.querySelector('.terminal-body').appendChild(line);
         
         await typeWriter(command, commands[i], 80);
+        
+        // Remove typing class after typing is complete
+        command.classList.remove('typing');
         
         await new Promise(resolve => setTimeout(resolve, 500));
         
@@ -92,7 +98,7 @@ async function initTerminal() {
     
     const finalPrompt = document.createElement('span');
     finalPrompt.className = 'prompt';
-    finalPrompt.textContent = 'danila@developer:~$';
+    finalPrompt.textContent = 'danila@develop:~$';
     
     const finalCommand = document.createElement('span');
     finalCommand.className = 'command';
@@ -152,9 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add parallax effect on scroll
+// Add parallax effect on scroll (only when content is visible)
 let lastScroll = 0;
 window.addEventListener('scroll', () => {
+    const content = document.getElementById('content');
+    if (!content || !content.classList.contains('visible')) {
+        return; // Don't apply parallax until content is visible
+    }
+    
     const currentScroll = window.pageYOffset;
     const sections = document.querySelectorAll('.section');
     
